@@ -43,6 +43,7 @@ public class SeatController {
     }
 
     // 3. 執行換座位動作
+    @Deprecated
     @PostMapping("/update-seat")
     public String update(@RequestBody Map<String, Object> payload) {
         String empId = (String) payload.get("empId");

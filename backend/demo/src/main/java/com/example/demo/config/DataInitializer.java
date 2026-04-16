@@ -20,7 +20,7 @@ public class DataInitializer implements CommandLineRunner {
                           JdbcTemplate jdbcTemplate) {
         this.seatingChartRepository = seatingChartRepository;
         this.employeeRepository = employeeRepository;
-        this.jdbcTemplate = jdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;   
     }
     
     @Override
