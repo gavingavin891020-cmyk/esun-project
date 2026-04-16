@@ -51,4 +51,47 @@ public class SeatController {
         seatService.updateSeat(empId, seatSeq);
         return "更新成功";
     }
+    
+    // 3.1 執行換座位動作 (前端版本) - 帶輸入驗證
+    @PostMapping("/update-seat1")
+    public Map<String, String> updateSeat1(@RequestBody Map<String, Object> payload) {
+        try {
+            // 輸入驗證 - 防止 XSS 和 SQL Injection
+            Object empIdObj = payload.get("empId");
+            Object seatSeqObj = payload.get("seatSeq");
+            
+            if (empIdObj == null || !(empIdObj instanceof String)) {
+                return Map.of("status", "error", "message", "員工編號格式錯誤");
+            }
+            
+            if (seatSeqObj == null || !(seatSeqObj instanceof Number)) {
+                return Map.of("status", "error", "message", "座位編號格式錯誤");
+            }
+            
+            String empId = ((String) empIdObj).trim();
+            Integer seatSeq = ((Number) seatSeqObj).intValue();
+            
+            // 驗證長度
+            if (empId.isEmpty() || empId.length() > 5) {
+                return Map.of("status", "error", "message", "員工編號長度無效（最多5碼）");
+            }
+            
+            // 驗證只包含數字和字母
+            if (!empId.matches("^[A-Za-z0-9]*$")) {
+                return Map.of("status", "error", "message", "員工編號只能包含字母和數字");
+            }
+            
+            if (seatSeq <= 0) {
+                return Map.of("status", "error", "message", "座位編號無效");
+            }
+            
+            // 調用服務更新座位
+            seatService.updateSeat(empId, seatSeq);
+            return Map.of("status", "success", "message", "座位更新成功");
+        } catch (IllegalArgumentException e) {
+            return Map.of("status", "error", "message", "輸入驗證失敗: " + e.getMessage());
+        } catch (Exception e) {
+            return Map.of("status", "error", "message", "座位更新失敗: " + e.getMessage());
+        }
+    }
 }

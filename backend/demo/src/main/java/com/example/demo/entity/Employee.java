@@ -11,11 +11,8 @@ public class Employee {
     @Column(name = "EMP_ID", length = 5)
     private String empId;
 
-    @Column(name = "NAME", nullable = false)
-    private String name;
-
-    @Column(name = "EMAIL")
-    private String email;
+    @Column(name = "EMP_NAME")
+    private String empName;
 
     // 這裡記錄該員工目前坐哪個位置的序號 (對應 SeatingChart 的 FLOOR_SEAT_SEQ)
     @Column(name = "FLOOR_SEAT_SEQ")
